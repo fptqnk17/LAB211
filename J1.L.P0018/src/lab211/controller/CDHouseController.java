@@ -21,7 +21,7 @@ public class CDHouseController {
 
     public CDHouseController(CDHouseView view) {
         this.view = view;
-        this.CDs = new ArrayList<>();
+        this.CDs = CDHouseController.loadFromFile();
 
         this.view.addOption("Add CD");
         this.view.addOption("Search CD by CD title");
@@ -32,11 +32,29 @@ public class CDHouseController {
         this.view.addOption("Print all list CDs from file");
         this.view.addOption("Exit");
     }
+    
+    private boolean checkCDExist(CD newCD) {
+        for (var cd : this.CDs) {
+            if (cd.getID() == newCD.getID()) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     private void addCD() {
         while (true) {
             CD newCD = this.view.addCD();
-            CDs.add(newCD);
+            
+            if (!this.checkCDExist(newCD)) {
+                this.CDs.add(newCD);
+                
+                this.view.printMessage("Add new CD successful");
+            }
+            else {
+                this.view.printError("Add new CD failed");
+            }
 
             if (this.view.showAskGoBackMainMenu() == 1) {
                 break;
@@ -130,7 +148,7 @@ public class CDHouseController {
                 if (cd.getID() == ID) {
                     if (this.view.comfirmDeleteCD() == 1) {
                         this.CDs.remove(cd);
-                        
+
                         this.view.printMessage("Delete successful!!");
                     } else {
                         this.view.printError("Delete failed!!");
@@ -178,7 +196,7 @@ public class CDHouseController {
         }
     }
 
-    private void printAllCDsFromFile() {
+    private static ArrayList<CD> loadFromFile() {
         ArrayList<CD> CDsFromFile = new ArrayList<>();
 
         try {
@@ -196,12 +214,17 @@ public class CDHouseController {
 
                 CDsFromFile.add(new CD(collectionName, type, title, unitPrice, id, publishingYear));
             }
-
-            Collections.sort(CDsFromFile, (CD cd1, CD cd2) -> cd1.getTitle().compareTo(cd2.getTitle()));
-
-            this.view.printAllCDs(CDsFromFile);
         } catch (IOException e) {
         }
+
+        return CDsFromFile;
+    }
+
+    private void printAllCDsFromFile() {
+        ArrayList<CD> CDsFromFile = CDHouseController.loadFromFile();
+
+        Collections.sort(CDsFromFile, (CD cd1, CD cd2) -> cd1.getTitle().compareTo(cd2.getTitle()));
+        this.view.printAllCDs(CDsFromFile);
     }
 
     public void run() {
