@@ -57,7 +57,7 @@ public class StudentList {
         float newGPA = 0.f;
 
         while (true) {
-            newID = Validation.getString("Enter ID (st. ID QE000000): ", "[qQ][eE][\\d]{6}");
+            newID = Validation.getString("Enter ID (st. ID QE000000): ", "[qQ][eE][\\d]{6}").toUpperCase();
 
             if (!this.isStudentIDDuplicated(newID)) {
                 break;
@@ -72,7 +72,7 @@ public class StudentList {
     }
 
     private boolean isStudentIDDuplicated(String ID) {
-        ID = ID.trim().toUpperCase();
+        ID = ID.trim();
 
         for (Student student : this.list) {
             if (student.getID().equalsIgnoreCase(ID)) {
@@ -93,5 +93,42 @@ public class StudentList {
         }
 
         return newList;
+    }
+
+    private Student search(String ID) {
+        for (Student s : this.list) {
+            if (s.getID().equalsIgnoreCase(ID)) {
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+    public void editInfo() {
+        System.out.println("Edit student's information");
+        System.out.println("--------------------------------");
+
+        String ID = Validation.getString("Enter ID (st. ID QE000000): ", "[qQ][eE][\\d]{6}");
+        Student student = this.search(ID);
+
+        if (student == null) {
+            System.err.println("Not found!");
+
+            return;
+        }
+
+        System.out.printf("%-15s%-25s%-8s%-5s\n", "ID", "Name", "Old", "GPA");
+        System.out.println(student);
+
+        String name = Validation.getString("Enter name: ");
+        int old = Validation.getInt("Enter old: ", 6, Integer.MAX_VALUE);
+        float GPA = Validation.getFloat("Enter GPA: ", 0.f, 10.f);
+
+        student.setName(name);
+        student.setOld(old);
+        student.setGPA(GPA);
+
+        System.out.println("Edit successfully!");
     }
 }

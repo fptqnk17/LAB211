@@ -12,6 +12,7 @@ public class StudentManagement extends Menu<String> {
         "Add new student",
         "Search student",
         "Sort list students",
+        "Edit information",
         "Exit"
     };
 
@@ -46,6 +47,10 @@ public class StudentManagement extends Menu<String> {
             }
 
             case 5 -> {
+                this.studentList.editInfo();
+            }
+
+            default -> {
                 this.stop();
             }
         }
