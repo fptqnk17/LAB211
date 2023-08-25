@@ -1,5 +1,5 @@
-# LAB211-Assignments
-> All source code about LAB211 that I learned at FPT University QN AI Campus.  
+# LAB211
+> All source code about LAB211 that we learned at FPT University QN AI Campus.  
 > Require: [PRO192](https://github.com/fptqnk17/PRO192)
 
 ![Languages](https://img.shields.io/github/languages/top/fptqnk17/LAB211?style=flat)
